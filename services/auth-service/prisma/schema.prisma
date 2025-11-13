@@ -1,0 +1,30 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  SUPERADMIN
+  MANAGER
+  ADMIN
+  TEACHER
+  PARENT
+  STUDENT
+}
+
+model AuthUser {
+  id           Int    @id @default(autoincrement())
+  email        String @unique
+  passwordHash String
+  role         Role   @default(STUDENT)
+
+  otp          String?
+  otpExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
